@@ -127,7 +127,7 @@ class Rooms(Resource):
             ).save_to_db() for date in dates]
 
         room.save_to_db()
-        return {"message": f"Successfully created room with id: {room.id}"}, HTTPStatus.OK
+        return {"message": f"Successfully created room", "room_id": room.id}, HTTPStatus.CREATED
 
 
 class Room(Resource):
