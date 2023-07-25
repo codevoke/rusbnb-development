@@ -11,7 +11,12 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReviewPage from './ReviewsPage';
 import RentOutPage from './RentOutPage';
-
+import MobileMainPage from './MobileMainPage';
+import { BrowserView, MobileView } from 'react-device-detect';
+import MobileSearch from './MobileSearch';
+import MobileFilter from './MobileFIlter';
+import MobileRentOutPage from './MobileRentOut';
+import MobileDetailsPage from './MobileDetails';
 
 export default function App() {
   
@@ -36,10 +41,12 @@ export default function App() {
 
     return (
       <>
+        <BrowserView>
         <Header />
         <BrowserRouter>
           <Routes>
-            <Route path="*" element={<MainPage />} />
+            <Route path="*" element={
+            <MainPage />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="details/:id" element={<DetailsPage />} />
             <Route path="login" element={<LoginPage />} />
@@ -48,6 +55,22 @@ export default function App() {
             <Route path='/rentout' element={<RentOutPage />} />
           </Routes>
         </BrowserRouter>
+        </BrowserView>
+        <MobileView>
+          <BrowserRouter>
+            <Routes>
+              <Route path="*" element={
+              <MobileMainPage />} />
+              <Route path="search" element={<MobileSearch />} />
+              <Route path="filter" element={<MobileFilter />} />
+              <Route path="details/:id" element={<MobileDetailsPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="profile/:userId" element={<ProfilePage />} />
+              <Route path="details/:id/reviews" element={<ReviewPage />} />
+              <Route path='/rentout' element={<MobileRentOutPage />} />
+            </Routes>
+          </BrowserRouter>
+        </MobileView>
         <ToastContainer 
             position="bottom-right"
             autoClose={5000}
