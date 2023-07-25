@@ -110,7 +110,7 @@ class Rooms(Resource):
         args = room_obj_args_parser.parse_args()
 
         dates = args['room_dates']
-        print(dates)
+        return dates
 
         room = RoomModel(
             title=args['title'],
