@@ -122,11 +122,12 @@ class Rooms(Resource):
             host_id=args['host_id']
         )
 
+        room.save_to_db()
+
         [HostFreeDatesModel(
             host_id=args['host_id'], date_from=date[0], date_to=date[1], room_id=room.id  # noqa: E501
             ).save_to_db() for date in dates]
 
-        room.save_to_db()
         return {"message": f"Successfully created room", "room_id": room.id}, HTTPStatus.CREATED
 
 
