@@ -24,6 +24,7 @@ def _str2date(str_date):
 def parse_dates(dates_array):
     dates = []
     for date in dates_array:
+        print(date)
         dates.append([
             _str2date(date['date_from']),
             _str2date(date['date_to'])
