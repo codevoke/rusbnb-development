@@ -123,7 +123,7 @@ class Rooms(Resource):
         )
 
         [HostFreeDatesModel(
-            host_id=args['host_id'], date_from=date[0], date_to=date[1], room_id=args['room_id']  # noqa: E501
+            host_id=args['host_id'], date_from=date[0], date_to=date[1], room_id=room.id  # noqa: E501
             ).save_to_db() for date in dates]
 
         room.save_to_db()
