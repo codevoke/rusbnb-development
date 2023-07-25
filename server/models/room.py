@@ -269,7 +269,7 @@ class RoomModel(db.Model):
             'price': self.price,
             'rate': ReviewModel.average_rate_by_id(self.id),
             'primary-image': RoomPhotoModel.get_one_by_room_id(self.id),
-            'host_dates': HostFreeDatesModel.find_by_room_id(self.id)
+            'host_dates': [date.json() for date in HostFreeDatesModel.find_by_room_id(self.id)]
         }
 
     def update(self,
