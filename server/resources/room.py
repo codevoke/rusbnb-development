@@ -22,10 +22,10 @@ def _str2date(str_date):
 
 
 def parse_dates(dates_array):
-    print(dates_array)
     dates = []
     for date in dates_array:
-        print(date)
+        if _str2date(date['date_from']) > _str2date(date['date_to']):
+            raise ValueError("date from must be earlier than date_to")
         dates.append([
             _str2date(date['date_from']),
             _str2date(date['date_to'])
@@ -110,7 +110,6 @@ class Rooms(Resource):
         args = room_obj_args_parser.parse_args()
 
         dates = args['room_dates']
-        return str(dates)
 
         room = RoomModel(
             title=args['title'],
