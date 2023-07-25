@@ -2,7 +2,7 @@
 from datetime import datetime as create_date
 from flask import request, abort
 from flask_restful import Resource, reqparse
-from models import RoomModel, RoomLocations, RoomTypes
+from models import RoomModel, RoomLocations, RoomTypes, HostFreeDatesModel
 
 const_rooms_args = [
     "offset", "size", 
@@ -26,10 +26,10 @@ def parse_dates(dates_array):
     for date in dates_array:
         if _str2date(date['date_from']) > _str2date(date['date_to']):
             raise ValueError("date from must be earlier than date_to")
-        dates.append([
+        dates.append((
             _str2date(date['date_from']),
             _str2date(date['date_to'])
-        ])
+        ))
     return dates
 
 
@@ -121,6 +121,11 @@ class Rooms(Resource):
             rooms_count=args['rooms_count'],
             host_id=args['host_id']
         )
+
+        [HostFreeDatesModel(
+            host_id=args['host_id'], date_from=date[0], date_to=date[1], room_id=args['room_id']  # noqa: E501
+            ).save_to_db() for date in dates]
+
         room.save_to_db()
         return {"message": "Successfully created room"}, HTTPStatus.OK
 
