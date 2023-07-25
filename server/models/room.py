@@ -4,6 +4,7 @@ from db import db
 from sqlalchemy import or_
 from .review import ReviewModel
 from .room_photo import RoomPhotoModel
+from .host_booking import HostFreeDatesModel
 
 
 class RoomLocations(Enum):
@@ -267,7 +268,8 @@ class RoomModel(db.Model):
             'type': self.type.value,
             'price': self.price,
             'rate': ReviewModel.average_rate_by_id(self.id),
-            'primary-image': RoomPhotoModel.get_one_by_room_id(self.id)
+            'primary-image': RoomPhotoModel.get_one_by_room_id(self.id),
+            'host_dates': HostFreeDatesModel.find_by_room_id(self.id)
         }
 
     def update(self,
