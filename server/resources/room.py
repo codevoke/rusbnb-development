@@ -1,5 +1,5 @@
 ﻿from http import HTTPStatus
-
+from datetime import datetime as create_date
 from flask import request, abort
 from flask_restful import Resource, reqparse
 from models import RoomModel, RoomLocations, RoomTypes
@@ -10,6 +10,25 @@ const_rooms_args = [
     "rooms_count", "max_cost", "min_rate",
     "sort_by_cost"
 ]
+
+
+def _str2date(str_date):
+    separated_date = str_date.split('/')
+    try:
+        [dd, mm, yy] = [int(el) for el in separated_date]
+        return create_date(yy, mm, dd)
+    except IndexError:
+        raise ValueError(f"incorrect date format: {str_date}")
+
+
+def parse_dates(dates_array):
+    dates = []
+    for date in dates_array:
+        dates.append([
+            _str2date(date['date_from']),
+            _str2date(date['date_to'])
+        ])
+    return dates
 
 
 def validate_room_location(value):
@@ -52,6 +71,9 @@ room_obj_args_parser.add_argument(
 room_obj_args_parser.add_argument(
     "rooms_count", type=int, required=True, help="rooms_count is required arg"
 )
+room_obj_args_parser.add_argument(
+    "room_dates", type=parse_dates, required=True, help="{error_msg}"
+)
 
 
 def get_args(*params):
@@ -84,6 +106,9 @@ class Rooms(Resource):
     @classmethod
     def post(cls):
         args = room_obj_args_parser.parse_args()
+
+        dates = args['room_dates']
+        print(dates)
 
         room = RoomModel(
             title=args['title'],
