@@ -112,6 +112,7 @@ class Reservation(Resource):
 
         user = UserModel.find_by_id(user_id)
         user.add_booked_room(room_id)
+        user.save_to_db()
         try:
             reservation.save_to_db()
         except SQLAlchemyError:
