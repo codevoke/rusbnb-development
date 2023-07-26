@@ -87,13 +87,17 @@ class Reservation(Resource):
         
         reservations_list = ReservationsModel.find_by_room_id(room_id)
 
+        is_date_in_host_dates = False
         # check is data in host dates
         for host_date in host_dates_list:
             host_date_from = _db_obj2date(host_date.date_from)
             host_date_to = _db_obj2date(host_date.date_to)
 
-            if not _is_date_crossing(host_date_from, host_date_to, date_from, date_to):  # noqa: E501
-                abort(400, "Your reservation not in host dates")  # noqa: E501
+            if _is_date_crossing(host_date_from, host_date_to, date_from, date_to):  # noqa: E501
+                is_date_in_host_dates = True
+                break
+        if not is_date_in_host_dates:
+            abort(400, "Your reservation not in host dates")
 
         # check that data isn't crossing with other dates
         for reservation in reservations_list:
