@@ -43,4 +43,4 @@ class UserModel(db.Model):
         self.booked_rooms.append(room_id)
 
     def get_booked_rooms(self):
-        return self.booked_rooms.tolist()
+        return self.booked_rooms
