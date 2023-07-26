@@ -32,7 +32,11 @@ class ReviewModel(db.Model):
 
     @classmethod
     def find_by_room_id(cls, room_id):
-        return cls.query.filter_by(room_id = room_id).all()
+        return cls.query.filter_by(room_id=room_id).all()
+
+    @classmethod
+    def find_by_room_id_and_user_id(cls, user_id, room_id):
+        return cls.query.filter_by(user_id=user_id, room_id=room_id).first()
 
     def save_to_db(self):
         db.session.add(self)

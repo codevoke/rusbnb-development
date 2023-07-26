@@ -1,4 +1,5 @@
 from db import db
+from sqlalchemy import ARRAY
 
 
 class UserModel(db.Model):
@@ -8,12 +9,14 @@ class UserModel(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(87), nullable=False)
     name_image = db.Column(db.String(80), nullable=True, default='Default.png')
+    booked_rooms = db.Column(ARRAY(db.Integer), nullable=True)
 
     def json(self):
         return {
             'id': self.id,
             'username': self.username,
-            'name_image': self.name_image
+            'name_image': self.name_image,
+            'booked_rooms': self.booked_rooms.tolist()
         }
 
     @classmethod
@@ -35,3 +38,9 @@ class UserModel(db.Model):
     def update(self, username, password):
         self.username = username
         self.password = password
+
+    def add_booked_room(self, room_id: int):
+        self.booked_rooms.append(room_id)
+
+    def get_booked_rooms(self):
+        return self.booked_rooms.tolist()

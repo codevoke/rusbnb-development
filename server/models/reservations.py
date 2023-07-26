@@ -43,4 +43,3 @@ class ReservationsModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
-
