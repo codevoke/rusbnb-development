@@ -38,6 +38,11 @@ class ReviewModel(db.Model):
     def find_by_room_id_and_user_id(cls, user_id, room_id):
         return cls.query.filter_by(user_id=user_id, room_id=room_id).first()
 
+    def put(self, review_text, rate):
+        self.review_text = review_text
+        self.rate = rate
+        db.session.commit()
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

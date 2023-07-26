@@ -73,10 +73,12 @@ class ReviewModify(Resource):
 
     @classmethod
     def put(cls, review_id: int):
-        request_args = review_put_object_parser.parse_args()
+        args = review_put_object_parser.parse_args()
+
         review = ReviewModel.find_by_id(review_id)
-        review.review_text = request_args["review_text"]
-        review.rate = request_args["rate"]
+
+        review.put(args['review_text'], args['rate'])
+
         return {"message": "Successfully modify review"}, HTTPStatus.ACCEPTED
 
     @classmethod
