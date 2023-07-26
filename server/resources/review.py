@@ -43,7 +43,7 @@ class Reviews(Resource):
 
 
         if user.id == room.host_id:
-            abort(406, "Ты ебобо?")
+            abort(406, "Author can't review self room")
 
         has_already_review = ReviewModel.find_by_room_id_and_user_id(
             request_args["user_id"], 
@@ -55,7 +55,7 @@ class Reviews(Resource):
 
         booked_rooms_by_user = user.get_booked_rooms()
 
-        if not(booked_rooms_by_user) or room_id not in booked_rooms_by_user:
+        if not (booked_rooms_by_user) or room_id not in booked_rooms_by_user:
             abort(400, "You didn't book this room for review")
 
         review = ReviewModel(

@@ -277,6 +277,16 @@ components:
         rate:
           type: number
 
+    ReviewPostObject:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        review_text:
+          type: string
+        rate:
+          type: number
+
     ReservationsOutputObject:
       type: object
       properties:
@@ -575,9 +585,35 @@ paths:
                       $ref: '#/components/schemas/Review'
         '404':
           description: Reviews not found
+    post:
+      summary: add new review of rooms
+      tags:
+        - Reviews
+      parameters:
+        -   name: room_id
+            in: path
+            description: ID of the room to retrieve reviews for
+            required: true
+            schema:
+              type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewPostObject'
+      responses:
+        '202':
+          description: Successfully created review
+        '400':
+          description: You didn't book this room for review
+        '403':
+          description: You've review for this room already
+        '406':
+          description: Author can't review self room
 
 
-  /reviews/{review_id}:
+  /review/{review_id}:
     put:
       summary: Modify review by ID
       tags:
