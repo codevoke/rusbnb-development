@@ -9,7 +9,7 @@ class UserModel(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(87), nullable=False)
     name_image = db.Column(db.String(80), nullable=True, default='Default.png')
-    booked_rooms = db.Column(ARRAY(db.Integer), nullable=True, default=[0])
+    booked_rooms = db.Column(db.String(), nullable=True)
 
     def json(self):
         return {
@@ -40,7 +40,7 @@ class UserModel(db.Model):
         self.password = password
 
     def add_booked_room(self, room_id: int):
-        self.booked_rooms.append(room_id)
+        self.booked_rooms += f" {room_id}"
 
     def get_booked_rooms(self):
-        return self.booked_rooms
+        return self.booked_rooms.split(' ')
