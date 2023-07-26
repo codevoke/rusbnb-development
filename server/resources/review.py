@@ -56,7 +56,7 @@ class Reviews(Resource):
         booked_rooms_by_user = user.get_booked_rooms()
 
         if room_id not in booked_rooms_by_user:
-            abort(400, "You didn't book this room for review")
+            abort(400, f"You didn't book this room for review, '{booked_rooms_by_user}'")  # noqa: E501
 
         review = ReviewModel(
             user_id=user.id,
