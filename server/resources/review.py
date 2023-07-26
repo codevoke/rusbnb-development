@@ -84,5 +84,5 @@ class ReviewModify(Resource):
     @classmethod
     def delete(cls, review_id: int):
         review = ReviewModel.find_by_id(review_id)
-        review.delete_from_dв()
+        review.delete_from_db()
         return {"message": "Successfully delete review"}, HTTPStatus.OK
