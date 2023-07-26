@@ -9,7 +9,7 @@ class UserModel(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(87), nullable=False)
     name_image = db.Column(db.String(80), nullable=True, default='Default.png')
-    booked_rooms = db.Column(ARRAY(db.Integer), nullable=True)
+    booked_rooms = db.Column(ARRAY(db.Integer), nullable=True, default=[0])
 
     def json(self):
         return {
