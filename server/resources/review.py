@@ -56,7 +56,7 @@ class Reviews(Resource):
         booked_rooms_by_user = user.get_booked_rooms()
 
         if not (room_id in booked_rooms_by_user):
-            abort(400, "You didn't book this room for review")  # noqa: E501
+            abort(400, "You didn't book this room for review"+str(room_id) + str(booked_rooms_by_user))  # noqa: E501
 
         review = ReviewModel(
             user_id=user.id,
