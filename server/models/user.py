@@ -47,4 +47,4 @@ class UserModel(db.Model):
 
     def get_booked_rooms(self):
         if self.booked_rooms:
-            return self.booked_rooms.split(' ')
+            return [int(x) for x in self.booked_rooms.split(' ')]
