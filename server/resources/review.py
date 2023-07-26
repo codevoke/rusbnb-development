@@ -38,9 +38,9 @@ class Reviews(Resource):
     def post(cls, room_id: int):
         request_args = review_object_parser.parse_args()
 
-
         user = UserModel.find_by_id(request_args['user_id'])
-        room = RoomModel.find_by_id(room_id).host_id
+        room = RoomModel.find_by_id(room_id)
+
 
         if user.id == room.host_id:
             abort(406, "Ты ебобо?")
