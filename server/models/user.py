@@ -16,7 +16,7 @@ class UserModel(db.Model):
             'id': self.id,
             'username': self.username,
             'name_image': self.name_image,
-            'booked_rooms': self.booked_rooms.tolist()
+            'booked_rooms': self.booked_rooms
         }
 
     @classmethod
