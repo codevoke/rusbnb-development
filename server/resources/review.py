@@ -55,7 +55,7 @@ class Reviews(Resource):
 
         booked_rooms_by_user = user.get_booked_rooms()
 
-        if booked_rooms_by_user and room_id not in booked_rooms_by_user:
+        if not(booked_rooms_by_user) or room_id not in booked_rooms_by_user:
             abort(400, "You didn't book this room for review")
 
         review = ReviewModel(
@@ -82,5 +82,5 @@ class ReviewModify(Resource):
     @classmethod
     def delete(cls, review_id: int):
         review = ReviewModel.find_by_id(review_id)
-        review.delete_from_bd()
+        review.delete_from_dв()
         return {"message": "Successfully delete review"}, HTTPStatus.OK
