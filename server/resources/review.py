@@ -55,7 +55,7 @@ class Reviews(Resource):
 
         booked_rooms_by_user = user.get_booked_rooms()
 
-        if room_id not in booked_rooms_by_user:
+        if booked_rooms_by_user and room_id not in booked_rooms_by_user:
             abort(400, "You didn't book this room for review")
 
         review = ReviewModel(
