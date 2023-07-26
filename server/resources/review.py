@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from flask import abort
 from flask_restful import Resource, reqparse
-from models import ReviewModel, UserModel
+from models import ReviewModel, UserModel, RoomModel
 
 review_object_parser = reqparse.RequestParser()
 review_object_parser.add_argument(
@@ -38,19 +38,25 @@ class Reviews(Resource):
     def post(cls, room_id: int):
         request_args = review_object_parser.parse_args()
 
+
+        user = UserModel.find_by_id(request_args['user_id'])
+        room = RoomModel.find_by_id(room_id).host_id
+
+        if user.id == room.host_id:
+            abort(406, "Ты ебобо?")
+
         has_already_review = ReviewModel.find_by_room_id_and_user_id(
             request_args["user_id"], 
             room_id
         )
 
         if has_already_review:
-            abort(400, "You've review for this room already")
+            abort(403, "You've review for this room already")
 
-        user = UserModel.find_by_id(request_args['user_id'])
         booked_rooms_by_user = user.get_booked_rooms()
 
         if room_id not in booked_rooms_by_user:
-            abort(400, "You didn't book this room for review")
+            abort(402, "You didn't book this room for review")
 
         review = ReviewModel(
             user_id=user.id,
