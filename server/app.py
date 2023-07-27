@@ -1,74 +1,33 @@
-import os
-from flask_socketio import SocketIO, emit, join_room, leave_room
-from dotenv import load_dotenv
-from flask import Flask, send_file
-from flask_cors import CORS  # Cross Origin Response Control
-from flask_restful import Api
-
-# from waitress import serve
-from db import db
-from resources.reservations import Reservations, Reservation
-from resources.review import Reviews, ReviewModify
-from resources.room import Rooms, Room
-from resources.room_photo import RoomPhoto
-from resources.user import UserRegister, UserLogin, User, UserLogout, AvatarChange
-from resources.review import Reviews, ReviewModify
-from resources.reservations import Reservations, Reservation, DeleteReservation
-
+from flask import Flask, render_template, send_file
+from flask_socketio import SocketIO, emit, join_room
+from flask_cors import CORS
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret_key'
+socketio = SocketIO(app)
 
-socketio = SocketIO(app, path='/messenger')
 CORS(app)
-load_dotenv()
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('PRODUCTION_DATABASE_URL')
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["PROPAGATE_EXCEPTIONS"] = True
-db.init_app(app)
-api = Api(app)
-
-with app.app_context():
-    import models  # noqa: F401
-
-    db.create_all()
 
 
-api.add_resource(UserRegister, "/register")
-api.add_resource(UserLogin, "/login")
-api.add_resource(UserLogout, "/logout")
-api.add_resource(User, "/user/<int:user_id>")
-api.add_resource(AvatarChange, "/user/<int:user_id>/avatar")
-
-api.add_resource(Reviews, "/reviews/<int:room_id>")
-api.add_resource(ReviewModify, "/review/<int:review_id>")
-
-api.add_resource(Reservations, "/book/user/<int:user_id>")
-api.add_resource(Reservation, "/book/<int:room_id>")
-api.add_resource(DeleteReservation, "/book/<int:reservation_id>/delete")
-
-api.add_resource(Rooms, "/rooms")
-api.add_resource(Room, "/rooms/<int:room_id>")
-api.add_resource(RoomPhoto, "/rooms/<int:room_id>/photo")
+@app.route('/')
+def index():
+    return send_file('../index.html')  # Отдаем статический HTML-файл
 
 
-@app.route("/")
-def main():
-    return send_file('api_dok.html')
+@socketio.on('message')
+def handle_message(message):
+    # Обработка полученных сообщений
+    print('Received message:', message)
 
+    # Отправка ответного сообщения
+    response = message
+    emit('new_msg', response, room='chat_room', include_self=True)
+ 
 
-@app.route("/api")
-def throw_static_api_documentation():
-    return send_file('OpenAPI.yaml')
-
-
-@app.route("/room-images/<filename>")
-def throw_photo(filename):
-    return send_file(f'room-images/{filename}')
-
-
-@app.route('/files')
-def files():
-    return os.listdir('room-images')
+@socketio.on('chat')
+def join():
+    print('\n\nJOIN USER')
+    join_room('chat_room')
 
 
 @socketio.on('connect')
@@ -76,7 +35,8 @@ def handle_connect():
     emit('connected')
 
 
-socketio.run(app, debug=True, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)  # noqa: E501
+if __name__ == '__main__':
+    socketio.run(app, debug=True, host='0.0.0.0', port=80, allow_unsafe_werkzeug=True)
 # serve(app, host="0.0.0.0", port=80)
 # serve - функция для запуска продакшен сервера. порт 80 - стандартный хттп порт,
 # (можно будет заходить на http://localhost без указания порта)
