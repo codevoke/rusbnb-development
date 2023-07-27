@@ -10,7 +10,8 @@ CORS(app)
 
 @socketio.on('connect')
 @cross_origin()
-def handle_connect():
+def handle_connect(data):
+    print(data)
     emit('connected')
 
 if __name__ == '__main__':
