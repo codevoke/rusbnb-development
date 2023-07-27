@@ -73,7 +73,7 @@ def files():
 
 @socketio.om('connect')
 def connect():
-    emit('successfully conected!')
+    emit('connected')
 
 
 socketio.run(app)
