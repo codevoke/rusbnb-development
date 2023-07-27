@@ -13,6 +13,7 @@ CORS(app)
 def handle_connect(data=None):
     print(data)
     emit('connected')
+    return "test"
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', port=80, allow_unsafe_werkzeug=True)
