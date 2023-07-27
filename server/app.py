@@ -18,7 +18,7 @@ from resources.reservations import Reservations, Reservation, DeleteReservation
 
 app = Flask(__name__)
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, path='/messenger')
 CORS(app)
 load_dotenv()
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('PRODUCTION_DATABASE_URL')
