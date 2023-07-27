@@ -10,7 +10,7 @@ CORS(app)
 
 @socketio.on('connect')
 @cross_origin()
-def handle_connect(data):
+def handle_connect(data=None):
     print(data)
     emit('connected')
 
