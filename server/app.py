@@ -71,7 +71,7 @@ def files():
     return os.listdir('room-images')
 
 
-@socketio.om('connect')
+@socketio.on('connect')
 def connect():
     emit('connected')
 
