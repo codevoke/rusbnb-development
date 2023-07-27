@@ -1,6 +1,7 @@
 Flask-restful
 Flask-SQLAlchemy
 Flask-CORS
+Flask-socketio
 psycopg2-binary
 passlib
 python-dotenv
