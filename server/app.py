@@ -72,7 +72,7 @@ def files():
 
 
 @socketio.on('connect')
-def connect():
+def handle_connect():
     emit('connected')
 
 
