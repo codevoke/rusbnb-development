@@ -76,7 +76,7 @@ def connect():
     emit('connected')
 
 
-socketio.run(app, debug=True, host='0.0.0.0', port=5000)
+socketio.run(app, debug=True, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)  # noqa: E501
 # serve(app, host="0.0.0.0", port=80)
 # serve - функция для запуска продакшен сервера. порт 80 - стандартный хттп порт,
 # (можно будет заходить на http://localhost без указания порта)
