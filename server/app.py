@@ -1,5 +1,5 @@
 import os
-
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from dotenv import load_dotenv
 from flask import Flask, send_file
 from flask_cors import CORS  # Cross Origin Response Control
@@ -18,6 +18,7 @@ from resources.reservations import Reservations, Reservation, DeleteReservation
 
 app = Flask(__name__)
 
+socketio = SocketIO(app)
 CORS(app)
 load_dotenv()
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('PRODUCTION_DATABASE_URL')
@@ -70,7 +71,12 @@ def files():
     return os.listdir('room-images')
 
 
-app.run(host='0.0.0.0', port=5000)
+@socketio.om('connect')
+def connect():
+    emit('successfully conected!')
+
+
+socketio.run(app)
 # serve(app, host="0.0.0.0", port=80)
 # serve - функция для запуска продакшен сервера. порт 80 - стандартный хттп порт,
 # (можно будет заходить на http://localhost без указания порта)
